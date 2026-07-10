@@ -42,7 +42,7 @@ public class JobApplication {
 	private String location;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "contact_type")
+	@Column(name = "contract_type")
 	private ContractType contractType;
 
 	@NotNull
@@ -68,7 +68,7 @@ public class JobApplication {
 	@Column(name = "contact_mail")
 	private String contactMail;
 
-	@Column(name = "bob_offer_url", length = 2048)
+	@Column(name = "job_offer_url", length = 2048)
 	private String jobOfferUrl;
 
 	@Size(max = 2000)

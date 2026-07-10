@@ -1,0 +1,144 @@
+### ============================================================================
+### Job Tracking API
+### Base URL
+### ============================================================================
+
+@baseUrl = http://localhost:8080/api/v1/applications
+
+### ============================================================================
+### Get all job applications
+### ============================================================================
+
+GET {{baseUrl}}
+
+###
+
+### ============================================================================
+### Get a job application by id
+### ============================================================================
+
+GET {{baseUrl}}/1
+
+###
+
+### ============================================================================
+### Create a new job application
+### ============================================================================
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+    "companyName": "OpenAI",
+    "jobTitle": "Java Backend Developer",
+    "industry": "Artificial Intelligence",
+    "location": "Remote",
+    "contractType": "CDI",
+    "applicationDate": "2026-07-10",
+    "applicationSource": "LINKEDIN",
+    "status": "ENVOYEE",
+    "nextActionDate": "2026-07-17",
+    "contactName": "John Smith",
+    "contactMail": "john.smith@openai.com",
+    "jobOfferUrl": "https://careers.openai.com/jobs/backend-developer",
+    "notes": "Application sent with a customized resume."
+}
+
+###
+
+### ============================================================================
+### Create a second job application
+### ============================================================================
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+    "companyName": "Ubisoft",
+    "jobTitle": "Backend Java Developer",
+    "industry": "Video Games",
+    "location": "Paris",
+    "contractType": "CDI",
+    "applicationDate": "2026-07-08",
+    "applicationSource": "COMPANY_WEBSITE",
+    "status": "A_RELANCER",
+    "nextActionDate": "2026-07-15",
+    "contactName": "Marie Dupont",
+    "contactMail": "marie.dupont@ubisoft.com",
+    "jobOfferUrl": "https://jobs.ubisoft.com/backend",
+    "notes": "Waiting for a response. Follow up next week."
+}
+
+###
+
+### ============================================================================
+### Update an existing application
+### ============================================================================
+
+PUT {{baseUrl}}/3
+Content-Type: application/json
+
+{
+    "companyName": "OpenAI",
+    "jobTitle": "Senior Java Backend Developer",
+    "industry": "Artificial Intelligence",
+    "location": "Remote",
+    "contractType": "CDI",
+    "applicationDate": "2026-07-10",
+    "applicationSource": "LINKEDIN",
+    "status": "ENTRETIEN",
+    "nextActionDate": "2026-07-20",
+    "contactName": "John Smith",
+    "contactMail": "john.smith@openai.com",
+    "jobOfferUrl": "https://careers.openai.com/jobs/backend-developer",
+    "notes": "Technical interview scheduled for next week."
+}
+
+###
+
+### ============================================================================
+### Delete a job application
+### ============================================================================
+
+DELETE {{baseUrl}}/2
+
+###
+
+### ============================================================================
+### Try to retrieve a non-existing application
+### ============================================================================
+
+GET {{baseUrl}}/9999
+
+###
+
+### ============================================================================
+### Create an invalid application (Validation test)
+### ============================================================================
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+    "companyName": "",
+    "jobTitle": "",
+    "applicationDate": null,
+    "status": null
+}
+
+###
+
+### ============================================================================
+### Create an application with an invalid email
+### ============================================================================
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+    "companyName": "Google",
+    "jobTitle": "Backend Engineer",
+    "applicationDate": "2026-07-10",
+    "status": "ENVOYEE",
+    "contactMail": "this-is-not-an-email"
+}
