@@ -1,5 +1,5 @@
 <template>
-	<form class="card bg-base-100 shadow-lg p-4 flex flex-col gap-4">
+	<form class="card bg-base-100 shadow-lg p-4 flex flex-col gap-4" @submit.prevent="submitForm">
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Company*</legend>
@@ -94,7 +94,7 @@
 		<p v-if="error" class="text-error">{{ error }}</p>
 
 		<div class="flex justify-end gap-2">
-			<button class="btn btn-primary" type="submit">Create application</button>
+			<button class="btn btn-primary" type="submit">Save application</button>
 		</div>
 	</form>
 </template>
@@ -102,14 +102,30 @@
 <script setup lang="ts">
 	import type { Application } from '@/types/application';
 	import { createEmptyApplication } from '@/utils/ApplicationFactory';
-	import { ref } from 'vue';
+	import { ref, watch, toRaw } from 'vue';
 
 	const props = defineProps<{
 		application?: Application
 	}>();
 
-	const form = ref<Application>(
-		props.application ? structuredClone(props.application) : createEmptyApplication()
-	)
+	const emit = defineEmits<{
+		submit: [application: Application]
+	}>();
+
+	const form = ref<Application>(createEmptyApplication());
 	const error = ref<string | null>(null);
+
+	watch(
+		() => props.application,
+		(newApplication) => {
+			form.value = newApplication
+				? structuredClone(toRaw(newApplication))
+				: createEmptyApplication()
+		},
+		{ immediate: true },
+	)
+
+	function submitForm() {
+		emit('submit', form.value);
+	}
 </script>

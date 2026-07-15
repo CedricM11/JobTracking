@@ -43,3 +43,5 @@ export type Application = {
 	status: ApplicationStatus
 	updatedAt: string
 }
+
+export type CreateApplicationPayload = Omit<Application, 'id' | 'createdAt' | 'updatedAt'>
