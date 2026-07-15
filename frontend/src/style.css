@@ -2,3 +2,7 @@
 @plugin "daisyui" {
 	themes: winter --default, night --prefersdark;
 }
+
+body {
+	@apply bg-base-200 text-base-content;
+}

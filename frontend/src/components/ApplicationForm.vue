@@ -1,6 +1,13 @@
 <template>
-	<form class="card bg-base-100 shadow-lg p-4 flex flex-col gap-4" @submit.prevent="submitForm">
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+	<form class="card bg-base-100 shadow-lg p-4 mx-4 flex flex-col gap-4" @submit.prevent="submitForm">
+		<div class="flex items-center gap-3">
+			<div class="rounded-lg bg-primary/10 p-1.5 text-primary ring-1 ring-primary/20">
+				<Info class="h-4 w-4" />
+			</div>
+			<h2 class="text-base text-primary font-semibold">General information</h2>
+		</div>
+
+		<div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Company*</legend>
 				<input v-model="form.companyName" class="input input-bordered w-full" type="text" required />
@@ -12,13 +19,24 @@
 			</fieldset>
 
 			<fieldset class="fieldset">
-				<legend class="fieldset-legend">Application date*</legend>
-				<input v-model="form.applicationDate" class="input input-bordered w-full" type="date" required />
+				<legend class="fieldset-legend">Industry</legend>
+				<input v-model="form.industry" class="input input-bordered w-full" type="text" />
 			</fieldset>
 
 			<fieldset class="fieldset">
-				<legend class="fieldset-legend">Next action date</legend>
-				<input v-model="form.nextActionDate" class="input input-bordered w-full" type="date" />
+				<legend class="fieldset-legend">Location</legend>
+				<input v-model="form.location" class="input input-bordered w-full" type="text" />
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Contract type</legend>
+				<select v-model="form.contractType" class="select select-bordered w-full">
+					<option value="CDI">CDI</option>
+					<option value="CDD">CDD</option>
+					<option value="ALTERNANCE">Alternance</option>
+					<option value="STAGE">Stage</option>
+					<option value="FREELANCE">Freelance</option>
+				</select>
 			</fieldset>
 
 			<fieldset class="fieldset">
@@ -34,7 +52,9 @@
 					<option value="OTHER">Other</option>
 				</select>
 			</fieldset>
+		</div>
 
+		<div class="grid grid-cols-1 gap-x-4 md:grid-cols-3">
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Status*</legend>
 				<select v-model="form.status" class="select select-bordered w-full">
@@ -50,26 +70,25 @@
 			</fieldset>
 
 			<fieldset class="fieldset">
-				<legend class="fieldset-legend">Contract type</legend>
-				<select v-model="form.contractType" class="select select-bordered w-full">
-					<option value="CDI">CDI</option>
-					<option value="CDD">CDD</option>
-					<option value="ALTERNANCE">Alternance</option>
-					<option value="STAGE">Stage</option>
-					<option value="FREELANCE">Freelance</option>
-				</select>
+				<legend class="fieldset-legend">Application date*</legend>
+				<input v-model="form.applicationDate" class="input input-bordered w-full" type="date" required />
 			</fieldset>
 
 			<fieldset class="fieldset">
-				<legend class="fieldset-legend">Location</legend>
-				<input v-model="form.location" class="input input-bordered w-full" type="text" />
+				<legend class="fieldset-legend">Next action date</legend>
+				<input v-model="form.nextActionDate" class="input input-bordered w-full" type="date" />
 			</fieldset>
+		</div>
 
-			<fieldset class="fieldset">
-				<legend class="fieldset-legend">Industry</legend>
-				<input v-model="form.industry" class="input input-bordered w-full" type="text" />
-			</fieldset>
+		<div class="divider my-1"></div>
+		<div class="flex items-center gap-3">
+			<div class="rounded-lg bg-primary/10 p-1.5 text-primary ring-1 ring-primary/20">
+				<User class="h-4 w-4" />
+			</div>
+			<h2 class="text-base text-primary font-semibold">Contact information</h2>
+		</div>
 
+		<div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Contact name</legend>
 				<input v-model="form.contactName" class="input input-bordered w-full" type="text" />
@@ -80,11 +99,21 @@
 				<input v-model="form.contactMail" class="input input-bordered w-full" type="email" />
 			</fieldset>
 
-			<fieldset class="fieldset">
+			<fieldset class="fieldset md:col-span-2">
 				<legend class="fieldset-legend">Job offer URL</legend>
 				<input v-model="form.jobOfferUrl" class="input input-bordered w-full" type="url" />
 			</fieldset>
+		</div>
 
+		<div class="divider my-1"></div>
+		<div class="flex items-center gap-3">
+			<div class="rounded-lg bg-primary/10 p-1.5 text-primary ring-1 ring-primary/20">
+				<Notebook class="h-4 w-4" />
+			</div>
+			<h2 class="text-base text-primary font-semibold">Notes</h2>
+		</div>
+
+		<div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
 			<fieldset class="fieldset md:col-span-2">
 				<legend class="fieldset-legend">Notes</legend>
 				<textarea v-model="form.notes" class="textarea textarea-bordered w-full" rows="4"></textarea>
@@ -103,6 +132,10 @@
 	import type { Application } from '@/types/application';
 	import { createEmptyApplication } from '@/utils/ApplicationFactory';
 	import { ref, watch, toRaw } from 'vue';
+
+	import { Info } from '@lucide/vue';
+	import { User } from '@lucide/vue';
+	import { Notebook } from '@lucide/vue';
 
 	const props = defineProps<{
 		application?: Application
