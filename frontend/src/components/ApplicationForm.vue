@@ -1,0 +1,115 @@
+<template>
+	<form class="card bg-base-100 shadow-lg p-4 flex flex-col gap-4">
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Company*</legend>
+				<input v-model="form.companyName" class="input input-bordered w-full" type="text" required />
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Job title*</legend>
+				<input v-model="form.jobTitle" class="input input-bordered w-full" type="text" required />
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Application date*</legend>
+				<input v-model="form.applicationDate" class="input input-bordered w-full" type="date" required />
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Next action date</legend>
+				<input v-model="form.nextActionDate" class="input input-bordered w-full" type="date" />
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Source</legend>
+				<select v-model="form.applicationSource" class="select select-bordered w-full">
+					<option value="EMAIL">Email</option>
+					<option value="LINKEDIN">LinkedIn</option>
+					<option value="INDEED">Indeed</option>
+					<option value="WELCOME_TO_THE_JUNGLE">Welcome to the Jungle</option>
+					<option value="COMPANY_WEBSITE">Company website</option>
+					<option value="PHONE">Phone</option>
+					<option value="IN_PERSON">In person</option>
+					<option value="OTHER">Other</option>
+				</select>
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Status*</legend>
+				<select v-model="form.status" class="select select-bordered w-full">
+					<option value="BROUILLON">Draft</option>
+					<option value="A_ENVOYER">To send</option>
+					<option value="ENVOYEE">Sent</option>
+					<option value="A_RELANCER">Follow up</option>
+					<option value="ENTRETIEN">Interview</option>
+					<option value="OFFRE">Offer</option>
+					<option value="REFUSEE">Rejected</option>
+					<option value="ABANDONNEE">Dropped</option>
+				</select>
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Contract type</legend>
+				<select v-model="form.contractType" class="select select-bordered w-full">
+					<option value="CDI">CDI</option>
+					<option value="CDD">CDD</option>
+					<option value="ALTERNANCE">Alternance</option>
+					<option value="STAGE">Stage</option>
+					<option value="FREELANCE">Freelance</option>
+				</select>
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Location</legend>
+				<input v-model="form.location" class="input input-bordered w-full" type="text" />
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Industry</legend>
+				<input v-model="form.industry" class="input input-bordered w-full" type="text" />
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Contact name</legend>
+				<input v-model="form.contactName" class="input input-bordered w-full" type="text" />
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Contact email</legend>
+				<input v-model="form.contactMail" class="input input-bordered w-full" type="email" />
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Job offer URL</legend>
+				<input v-model="form.jobOfferUrl" class="input input-bordered w-full" type="url" />
+			</fieldset>
+
+			<fieldset class="fieldset md:col-span-2">
+				<legend class="fieldset-legend">Notes</legend>
+				<textarea v-model="form.notes" class="textarea textarea-bordered w-full" rows="4"></textarea>
+			</fieldset>
+		</div>
+
+		<p v-if="error" class="text-error">{{ error }}</p>
+
+		<div class="flex justify-end gap-2">
+			<button class="btn btn-primary" type="submit">Create application</button>
+		</div>
+	</form>
+</template>
+
+<script setup lang="ts">
+	import type { Application } from '@/types/application';
+	import { createEmptyApplication } from '@/utils/ApplicationFactory';
+	import { ref } from 'vue';
+
+	const props = defineProps<{
+		application?: Application
+	}>();
+
+	const form = ref<Application>(
+		props.application ? structuredClone(props.application) : createEmptyApplication()
+	)
+	const error = ref<string | null>(null);
+</script>
