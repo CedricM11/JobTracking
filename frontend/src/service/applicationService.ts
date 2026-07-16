@@ -16,3 +16,7 @@ export function createApplicationService(application: CreateApplicationPayload) 
 export function updateApplicationService(application: Application) {
 	return api.put<Application>(`/applications/${application.id}`, application);
 }
+
+export function deleteApplicationService(id: string) {
+	return api.delete<void>(`/applications/${id}`);
+}

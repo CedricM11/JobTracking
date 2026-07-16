@@ -10,22 +10,22 @@
 		<div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Company*</legend>
-				<input v-model="form.companyName" class="input input-bordered w-full" type="text" required />
+				<input v-model="form.companyName" class="input input-bordered w-full" type="text" placeholder="e.g. OpenAI" required />
 			</fieldset>
 
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Job title*</legend>
-				<input v-model="form.jobTitle" class="input input-bordered w-full" type="text" required />
+				<input v-model="form.jobTitle" class="input input-bordered w-full" type="text" placeholder="e.g. Backend Developer" required />
 			</fieldset>
 
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Industry</legend>
-				<input v-model="form.industry" class="input input-bordered w-full" type="text" />
+				<input v-model="form.industry" class="input input-bordered w-full" placeholder="e.g. Technology, Software" type="text" />
 			</fieldset>
 
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Location</legend>
-				<input v-model="form.location" class="input input-bordered w-full" type="text" />
+				<input v-model="form.location" class="input input-bordered w-full" placeholder="e.g. Remote, Paris, France" type="text" />
 			</fieldset>
 
 			<fieldset class="fieldset">
@@ -91,17 +91,17 @@
 		<div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Contact name</legend>
-				<input v-model="form.contactName" class="input input-bordered w-full" type="text" />
+				<input v-model="form.contactName" class="input input-bordered w-full" placeholder="e.g. John Doe" type="text" />
 			</fieldset>
 
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Contact email</legend>
-				<input v-model="form.contactMail" class="input input-bordered w-full" type="email" />
+				<input v-model="form.contactMail" class="input input-bordered w-full" placeholder="e.g. john.doe@company.com" type="email" />
 			</fieldset>
 
 			<fieldset class="fieldset md:col-span-2">
 				<legend class="fieldset-legend">Job offer URL</legend>
-				<input v-model="form.jobOfferUrl" class="input input-bordered w-full" type="url" />
+				<input v-model="form.jobOfferUrl" class="input input-bordered w-full" placeholder="e.g. https://company.com/careers/123" type="url" />
 			</fieldset>
 		</div>
 
@@ -116,7 +116,7 @@
 		<div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
 			<fieldset class="fieldset md:col-span-2">
 				<legend class="fieldset-legend">Notes</legend>
-				<textarea v-model="form.notes" class="textarea textarea-bordered w-full" rows="4"></textarea>
+				<textarea v-model="form.notes" class="textarea textarea-bordered w-full" placeholder="add any notes about this application" rows="4"></textarea>
 			</fieldset>
 		</div>
 

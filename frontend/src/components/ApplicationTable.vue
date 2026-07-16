@@ -14,7 +14,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					<ApplicationRow v-for="application in applications" :key="application.id" :application="application"/>
+					<ApplicationRow
+						v-for="application in applications"
+						:key="application.id"
+						:application="application"
+						@deleted="handleDeleted" />
 				</tbody>
 			</table>
 		</div>
@@ -29,6 +33,10 @@
 
 	const applications = ref<Application[]>([]);
 	const error = ref<string | null>(null);
+
+	function handleDeleted(id: string) {
+		applications.value = applications.value.filter(app => app.id.toString() !== id);
+	}
 
 	onMounted(async () => {
 		error.value = null;
