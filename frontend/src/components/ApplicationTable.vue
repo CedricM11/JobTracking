@@ -1,5 +1,10 @@
 <template>
-	<p v-if="error" class="text-error">{{ error }}</p>
+	<BaseAlert
+		v-if="error"
+		level="error"
+		:message="error"
+		@close="error=null"
+	/>
 	<div class="rounded-2xl bg-base-100 shadow-sm">
 		<div class="overflow-x-auto">
 			<table class="table table-zebra">
@@ -29,6 +34,7 @@
 	import { onMounted } from 'vue';
 	import { useApplications } from '@/composables/useApplications.ts';
 	import ApplicationRow from './ApplicationRow.vue';
+	import BaseAlert from './BaseAlert.vue';
 
 	const { applications, error, loadApplications, deleteApplication } = useApplications();
 

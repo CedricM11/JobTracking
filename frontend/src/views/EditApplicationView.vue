@@ -1,4 +1,10 @@
 <template>
+	<BaseAlert
+		v-if="error"
+		level="error"
+		:message="error"
+		@close="error=null"
+	/>
 	<div class="flex items-center gap-4 p-4">
 		<RouterLink :to="{ name: 'home' }">
 			<div class="btn btn-circle">
@@ -10,7 +16,6 @@
 			<p class="text-sm text-base-content/70">add an existing application to keep track of your progress</p>
 		</div>
 	</div>
-	<p v-if="error" class="text-error">{{ error }}</p>
 	<ApplicationForm
 		v-if="application"
 		:application="application"
@@ -19,6 +24,7 @@
 
 <script setup lang="ts">
 	import ApplicationForm from '@/components/ApplicationForm.vue';
+	import BaseAlert from '@/components/BaseAlert.vue';
 	import { useEditApplication } from '@/composables/useEditApplication';
 	import { ArrowLeft } from '@lucide/vue';
 	import { onMounted } from 'vue';

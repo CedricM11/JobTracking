@@ -1,4 +1,10 @@
 <template>
+	<BaseAlert
+		v-if="error"
+		level="error"
+		:message="error"
+		@close="error=null"
+	/>
 	<form class="card bg-base-100 shadow-lg p-4 mx-4 flex flex-col gap-4" @submit.prevent="submitForm">
 		<div class="flex items-center gap-3">
 			<div class="rounded-lg bg-primary/10 p-1.5 text-primary ring-1 ring-primary/20">
@@ -10,12 +16,14 @@
 		<div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Company*</legend>
-				<input v-model="form.companyName" class="input input-bordered w-full" type="text" placeholder="e.g. OpenAI" required />
+				<input v-model="form.companyName" class="input input-bordered w-full" type="text" placeholder="e.g. OpenAI" />
+				<p v-if="fieldErrors.companyName" class="text-xs text-error">{{ fieldErrors.companyName }}</p>
 			</fieldset>
 
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Job title*</legend>
 				<input v-model="form.jobTitle" class="input input-bordered w-full" type="text" placeholder="e.g. Backend Developer" required />
+				<p v-if="fieldErrors.jobTitle" class="text-xs text-error">{{ fieldErrors.jobTitle }}</p>
 			</fieldset>
 
 			<fieldset class="fieldset">
@@ -67,11 +75,13 @@
 					<option value="REFUSEE">Rejected</option>
 					<option value="ABANDONNEE">Dropped</option>
 				</select>
+				<p v-if="fieldErrors.status" class="text-xs text-error">{{ fieldErrors.status }}</p>
 			</fieldset>
 
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Application date*</legend>
 				<input v-model="form.applicationDate" class="input input-bordered w-full" type="date" required />
+				<p v-if="fieldErrors.applicationDate" class="text-xs text-error">{{ fieldErrors.applicationDate }}</p>
 			</fieldset>
 
 			<fieldset class="fieldset">
@@ -97,11 +107,13 @@
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">Contact email</legend>
 				<input v-model="form.contactMail" class="input input-bordered w-full" placeholder="e.g. john.doe@company.com" type="email" />
+				<p v-if="fieldErrors.contactMail" class="text-xs text-error">{{ fieldErrors.contactMail }}</p>
 			</fieldset>
 
 			<fieldset class="fieldset md:col-span-2">
 				<legend class="fieldset-legend">Job offer URL</legend>
 				<input v-model="form.jobOfferUrl" class="input input-bordered w-full" placeholder="e.g. https://company.com/careers/123" type="url" />
+				<p v-if="fieldErrors.jobOfferUrl" class="text-xs text-error">{{ fieldErrors.jobOfferUrl }}</p>
 			</fieldset>
 		</div>
 
@@ -120,8 +132,6 @@
 			</fieldset>
 		</div>
 
-		<p v-if="error" class="text-error">{{ error }}</p>
-
 		<div class="flex justify-end gap-2">
 			<button class="btn btn-primary" type="submit">Save application</button>
 		</div>
@@ -129,13 +139,15 @@
 </template>
 
 <script setup lang="ts">
+	import BaseAlert from './BaseAlert.vue';
 	import type { Application } from '@/types/application';
 	import { createEmptyApplication } from '@/utils/ApplicationFactory';
-	import { ref, watch, toRaw } from 'vue';
+	import { watch, toRaw } from 'vue';
 
 	import { Info } from '@lucide/vue';
 	import { User } from '@lucide/vue';
 	import { Notebook } from '@lucide/vue';
+	import { useApplicationForm } from '@/composables/useApplicationForm';
 
 	const props = defineProps<{
 		application?: Application
@@ -145,20 +157,21 @@
 		submit: [application: Application]
 	}>();
 
-	const form = ref<Application>(createEmptyApplication());
-	const error = ref<string | null>(null);
+	const { form, error, fieldErrors, clearErrors, isValidForm } = useApplicationForm();
 
 	watch(
 		() => props.application,
 		(newApplication) => {
 			form.value = newApplication
 				? structuredClone(toRaw(newApplication))
-				: createEmptyApplication()
+				: createEmptyApplication();
+			clearErrors();
 		},
 		{ immediate: true },
 	)
 
 	function submitForm() {
+		if(!isValidForm()) return;
 		emit('submit', form.value);
 	}
 </script>
