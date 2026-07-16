@@ -18,7 +18,7 @@
 						v-for="application in applications"
 						:key="application.id"
 						:application="application"
-						@deleted="handleDeleted" />
+						@delete="deleteApplication" />
 				</tbody>
 			</table>
 		</div>
@@ -26,26 +26,13 @@
 </template>
 
 <script setup lang="ts">
-	import { onMounted, ref } from 'vue';
-	import type { Application } from '@/types/application';
-	import { getApplications } from '@/service/applicationService';
+	import { onMounted } from 'vue';
+	import { useApplications } from '@/composables/useApplications.ts';
 	import ApplicationRow from './ApplicationRow.vue';
 
-	const applications = ref<Application[]>([]);
-	const error = ref<string | null>(null);
-
-	function handleDeleted(id: string) {
-		applications.value = applications.value.filter(app => app.id.toString() !== id);
-	}
+	const { applications, error, loadApplications, deleteApplication } = useApplications();
 
 	onMounted(async () => {
-		error.value = null;
-		try {
-			const response = await getApplications();
-			applications.value = response.data;
-		} catch (err) {
-			error.value = "Enable to load applications data";
-			console.error("Error: ", err);
-		}
+		await loadApplications();
 	})
 </script>

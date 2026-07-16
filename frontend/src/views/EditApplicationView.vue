@@ -14,46 +14,23 @@
 	<ApplicationForm
 		v-if="application"
 		:application="application"
-		@submit="handleSubmit" />
+		@submit="updateApplication" />
 </template>
 
 <script setup lang="ts">
 	import ApplicationForm from '@/components/ApplicationForm.vue';
-	import { getApplicationByIdService, updateApplicationService } from '@/service/applicationService';
-	import type { Application } from '@/types/application';
-	import { onMounted, ref } from 'vue';
-	import { useRouter } from 'vue-router';
-
+	import { useEditApplication } from '@/composables/useEditApplication';
 	import { ArrowLeft } from '@lucide/vue';
+	import { onMounted } from 'vue';
+
+	const { application, error, loadApplicationById, updateApplication } = useEditApplication();
 
 	const props = defineProps<{
 		id: string
 	}>();
 
-	const router = useRouter();
-	const application = ref<Application | null>(null);
-	const error = ref<string | null>(null);
-
-	async function handleSubmit(app: Application) {
-		try {
-			await updateApplicationService(app);
-			await router.push({ name: "home" });
-		} catch(err) {
-			console.error(err);
-			error.value = "Unable to update application";
-		}
-	}
-
 	onMounted(async () => {
-		error.value = null;
-
-		try {
-			const response = await getApplicationByIdService(props.id);
-			application.value = response.data;
-		} catch(err) {
-			console.error(err);
-			error.value = "Unable to load application";
-		}
+		loadApplicationById(props.id);
 	});
 
 </script>

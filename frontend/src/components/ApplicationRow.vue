@@ -43,14 +43,13 @@
 	import { ref } from 'vue';
 	import { Trash2 } from '@lucide/vue';
 	import { SquarePen } from '@lucide/vue';
-	import { deleteApplicationService } from '@/service/applicationService.ts';
 
 	const props = defineProps<{
 		application: Application
 	}>();
 
 	const emit = defineEmits<{
-		deleted: [id: string]
+		delete: [id: string]
 	}>();
 
 	const deleteDialog = ref<HTMLDialogElement | null>(null);
@@ -66,13 +65,8 @@
 		ABANDONNEE:   { label: 'Dropped',   badgeClass: 'badge-neutral' },
 	}
 
-	async function handleDelete() {
-		try {
-			await deleteApplicationService(props.application.id.toString());
-			deleteDialog.value?.close();
-			emit("deleted", props.application.id.toString());
-		} catch(err) {
-			console.error(err);
-		}
+	function handleDelete() {
+		emit("delete", props.application.id.toString());
+		deleteDialog.value?.close();
 	}
 </script>
