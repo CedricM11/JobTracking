@@ -23,16 +23,31 @@ public class DashboardStatisticsServiceImpl implements DashboardStatisticsServic
 
 		DashboardStatistics stats = new DashboardStatistics();
 		List<StatusCountProjection> counts = repository.countApplicationByStatus();
-
+		long sentCount = 0;
+		
 		for (StatusCountProjection row : counts) {
 			ApplicationStatus status = row.getStatus();
 			Long count = row.getCount();
 
 			switch (status) {
 				case ENVOYEE:
-					stats.setSent(count);
+				case A_RELANCER:
+				case ENTRETIEN:
+				case OFFRE:
+				case REFUSEE:
+					sentCount += count;
 					break;
 
+				case BROUILLON:
+				case A_ENVOYER:
+				case ABANDONNEE:
+					break;
+
+				default:
+					break;
+			}
+
+			switch (status) {
 				case A_RELANCER:
 					stats.setPending(count);
 					break;
@@ -53,6 +68,7 @@ public class DashboardStatisticsServiceImpl implements DashboardStatisticsServic
 					break;
 			}
 		}
+		stats.setSent(sentCount);
 		return stats;
 	}
 }
