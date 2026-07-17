@@ -1,7 +1,7 @@
 <template>
-	<RouterLink class="btn btn-primary" :to="{name: 'new'}">New Application</RouterLink>
-	<StatsPreview />
-	<div class="container m-auto">
+	<div class="flex flex-col gap-y-6">
+		<DashboardHeader />
+		<StatsPreview />
 		<ApplicationTable />
 	</div>
 </template>
@@ -9,4 +9,5 @@
 <script setup lang="ts">
 	import ApplicationTable from '@/components/ApplicationTable.vue';
 	import StatsPreview from '@/components/StatsPreview.vue';
+	import DashboardHeader from '@/components/DashboardHeader.vue';
 </script>

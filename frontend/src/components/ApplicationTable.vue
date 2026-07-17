@@ -7,9 +7,9 @@
 	/>
 	<div class="rounded-2xl bg-base-100 shadow-sm">
 		<div class="overflow-x-auto">
-			<table class="table table-zebra">
+			<table class="table">
 				<thead>
-					<tr class="text-base-content/50">
+					<tr class="text-base-content">
 						<th>Company</th>
 						<th>Job title</th>
 						<th>Application date</th>
