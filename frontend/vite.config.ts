@@ -15,12 +15,9 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    strictPort: true,
-    proxy: {
-      '/api': {
-        target: 'http://backend:8080',
-        changeOrigin: true,
-      },
+    hmr: {
+      protocol: 'wss',
+      host: 'localhost',
     },
   },
   resolve: {
