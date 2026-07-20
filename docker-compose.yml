@@ -1,0 +1,54 @@
+services:
+  postgresDB:
+    image: postgres:16-alpine
+    container_name: jobtracking_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-jobtracking}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-1234}
+    ports:
+      - "15432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - jobtracking-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-jobtracking}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: jobtracking_backend
+    restart: unless-stopped
+    depends_on:
+      postgresDB:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresDB:5432/${POSTGRES_DB:-jobtracking}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-1234}
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+    networks:
+      - jobtracking-net
+
+
+  frontend:
+    build: ./frontend
+    container_name: jobtracking_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    networks:
+      - jobtracking-net
+
+volumes:
+  db-data:
+
+networks:
+  jobtracking-net:
+    driver: bridge
